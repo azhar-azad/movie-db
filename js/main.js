@@ -1,13 +1,17 @@
+const API = {
+    baseUrl: 'http://www.omdbapi.com',
+    key: '742ce23d'
+};
+
+const BASE_API_URL = API.baseUrl + '?apikey=' + API.key;
+// http://www.omdbapi.com?apikey=742ce23d
+
 /*
 We want to catch a submission of the form
 and then we want to take the value
 and then call a function called getMovies which will reach out to the OMDB API
 API LINK: http://www.omdbapi.com/
  */
-
-API_LINK = 'http://www.omdbapi.com';
-API_KEY = '742ce23d';
-BASE_API_URL = API_LINK + '?apikey=' + API_KEY; // http://www.omdbapi.com?apikey=742ce23d
 
 // When index.html is finished loading, following function will be called
 $(document).ready(() => {
@@ -30,7 +34,8 @@ $(document).ready(() => {
 function getMovies(searchText) {
 
     // make a request to the API using axios
-    searchUrl = BASE_API_URL + '&s=' + searchText; //http://www.omdbapi.com?apikey=742ce23d&s=searchText
+    searchUrl = BASE_API_URL + '&s=' + searchText;
+    //http://www.omdbapi.com?apikey=742ce23d&s=searchText
     axios.get(searchUrl)
         .then((response) => {
             console.log(response);
@@ -38,23 +43,7 @@ function getMovies(searchText) {
             // keep all the search results in an array
             let movies = response.data.Search;
 
-            let output = '';
-            // use jquery loop to iterate through all the items in the array
-            $.each(movies, (index, movie) => {
-                output += `
-                    <div class="col-md-3">
-                        <div class="well text-center">
-                            <img src="${movie.Poster}">
-                            <h5>${movie.Title}</h5>
-                            <a onclick="movieSelected('${movie.imdbID}')" 
-                                class="btn btn-primary"
-                                href="#">Movie Details</a>
-                        </div>
-                    </div>
-                `;
-            });
-
-            $('#movies').html(output);
+            showMoviesList(movies);
         })
         .catch((err) => {
             console.log(err);
@@ -70,6 +59,7 @@ function movieSelected(id) {
 
     // then go to movie.html file
     window.location = 'movie.html';
+    console.log(window.location);
 
     return false;
 }
@@ -85,39 +75,64 @@ function getMovie() {
             console.log(response);
             let movie = response.data;
 
-            let output = `
-                <div class="row">
-                    <div class="col-md-4">
-                        <img src="${movie.Poster}" class="thumbnail">
-                    </div>
-                    <div class="col-md-8">
-                        <h2>${movie.Title}</h2>
-                        <ul class="list-group">
-                            <li class="list-group-item"><strong>Genre: </strong>${movie.Genre}</li>
-                            <li class="list-group-item"><strong>Released: </strong>${movie.Released}</li>
-                            <li class="list-group-item"><strong>Rated: </strong>${movie.Rated}</li>
-                            <li class="list-group-item"><strong>IMDB Rating: </strong>${movie.imdbRating}</li>
-                            <li class="list-group-item"><strong>Director: </strong>${movie.Director}</li>
-                            <li class="list-group-item"><strong>Writer: </strong>${movie.Writer}</li>
-                            <li class="list-group-item"><strong>Actors: </strong>${movie.Actors}</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="well">
-                        <h3>Plot</h3>
-                        ${movie.Plot}
-                        <hr>
-                        <a href="http://www.imdb.com/title/${movie.imdbID}" 
-                            target="_blank" class="btn btn-primary">View in IMDB</a>
-                        <a href="index.html" class="btn btn-info">Back To Search</a>
-                    </div>
-                </div>
-            `;
-
-            $('#movie').html(output);
+            showMovie(movie);
         })
         .catch((err) => {
             console.log(err);
         });
+}
+
+function showMoviesList(movies) {
+    let output = '';
+    // use jquery loop to iterate through all the items in the array
+    $.each(movies, (index, movie) => {
+        output += `
+            <div class="col-md-3">
+                <div class="well text-center">
+                    <img src="${movie.Poster}">
+                    <h5>${movie.Title}</h5>
+                    <a onclick="movieSelected('${movie.imdbID}')" 
+                        class="btn btn-primary"
+                        href="#"
+                        target="_blank">Movie Details</a>
+                </div>
+            </div>
+        `;
+    });
+
+    $('#movies').html(output);
+}
+
+function showMovie(movie) {
+    let output = `
+        <div class="row">
+            <div class="col-md-4">
+                <img src="${movie.Poster}" class="thumbnail">
+            </div>
+            <div class="col-md-8">
+                <h2>${movie.Title}</h2>
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Genre: </strong>${movie.Genre}</li>
+                    <li class="list-group-item"><strong>Released: </strong>${movie.Released}</li>
+                    <li class="list-group-item"><strong>Rated: </strong>${movie.Rated}</li>
+                    <li class="list-group-item"><strong>IMDB Rating: </strong>${movie.imdbRating}</li>
+                    <li class="list-group-item"><strong>Director: </strong>${movie.Director}</li>
+                    <li class="list-group-item"><strong>Writer: </strong>${movie.Writer}</li>
+                    <li class="list-group-item"><strong>Actors: </strong>${movie.Actors}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="well">
+                <h3>Plot</h3>
+                ${movie.Plot}
+                <hr>
+                <a href="http://www.imdb.com/title/${movie.imdbID}" 
+                    target="_blank" class="btn btn-primary">View in IMDB</a>
+                <a href="index.html" class="btn btn-info">Back To Search</a>
+            </div>
+        </div>
+    `;
+
+    $('#movie').html(output);
 }
