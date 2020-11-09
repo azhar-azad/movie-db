@@ -26,7 +26,7 @@ live-server
 Live-server should automatically open a browser window and 
 you should see the app running on the browser. 
 If not, open a browser window and go to url:   
-[localhost:8080](localhost:8080)  
+[localhost:8080](http://localhost:8080)  
 or  
 [http://127.0.0.1:8080/](http://127.0.0.1:8080)
 
