@@ -27,9 +27,29 @@
     <div class="container">
         <div class="jumbotron">
             <h3 class="text-center">Search For Any Movie</h3>
-            <form id="searchForm">
-                <input type="text" class="form-control" id="searchText" placeholder="Search Movies...">
-            </form>
+            <div class="form-group">
+                <form id="searchForm">
+                    <div class="formItem">
+                        <label for="searchTitle">Title: </label>
+                        <input type="text" class="form-control" id="searchTitle" placeholder="Search by title..." required>
+                    </div>
+                    <div class="formItem">
+                        <label for="searchType">Type: </label>
+                        <input type="text" class="form-control" id="searchType" placeholder="Search by type (movie, series, episode)...">
+                    </div>
+                    <div class="formItem">
+                        <label for="searchYear">Year: </label>
+                        <input type="text" class="form-control" id="searchYear" placeholder="Search by year...">
+                    </div>
+                    <button class="btn btn-primary" onclick="">Submit</button>
+                </form>
+            </div>
+            <!--<div class="form-group">-->
+                <!--<label for="searchText">Title: </label>-->
+                <!--<form id="searchForm">-->
+                    <!--<input type="text" class="form-control" id="searchText" placeholder="Search by title...">-->
+                <!--</form>-->
+            <!--</div>-->
         </div>
     </div>
 <!--form end-->

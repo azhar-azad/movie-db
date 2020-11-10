@@ -19,11 +19,20 @@ $(document).ready(() => {
     // crate an event for when the form is submitted
     $('#searchForm').on('submit', (event) => {
 
-        // get the search text from the form
-        let searchText = $('#searchText').val();
+        // get the search title from the form
+        let searchTitle = $('#searchTitle').val();
+        if (searchTitle === undefined) searchTitle = '';
+
+        // get the search type from the form
+        let searchType = $('#searchType').val();
+        if (searchType === undefined) searchType = '';
+
+        // get the search year from the form
+        let searchYear = $('#searchYear').val();
+        if (searchYear === undefined) searchYear = '';
 
         // find the movies for the search text
-        getMovies(searchText);
+        getMovies(searchTitle, searchType, searchYear);
 
         // prevent the form from actually submitting
         event.preventDefault();
@@ -31,11 +40,11 @@ $(document).ready(() => {
 });
 
 // find the movies for the search text
-function getMovies(searchText) {
+function getMovies(searchTitle, searchType, searchYear) {
 
     // make a request to the API using axios
-    searchUrl = BASE_API_URL + '&s=' + searchText;
-    //http://www.omdbapi.com?apikey=742ce23d&s=searchText
+    searchUrl = BASE_API_URL + '&s=' + searchTitle + '&type=' + searchType + '&y=' + searchYear;
+    //http://www.omdbapi.com?apikey=742ce23d&s=searchTitle&type=searchType&y=searchYear
     axios.get(searchUrl)
         .then((response) => {
             console.log(response);
@@ -128,8 +137,8 @@ function showMovie(movie) {
                 ${movie.Plot}
                 <hr>
                 <a href="http://www.imdb.com/title/${movie.imdbID}" 
-                    target="_blank" class="btn btn-primary">View in IMDB</a>
-                <a href="index.html" class="btn btn-info">Back To Search</a>
+                    target="_blank" class="btn btn-info">View in IMDB</a>
+                <a href="index.html" class="btn btn-primary">Back To Search</a>
             </div>
         </div>
     `;
